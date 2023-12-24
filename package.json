@@ -1,0 +1,40 @@
+{
+  "name": "@nomyx/assistant-tools",
+  "version": "1.0.0",
+  "description": "A TypeScript module for AI interpretation.",
+  "main": "dist/tools/index.js",
+  "publisher": "Nomyx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomyx-io/assistant-tools.git"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "AI",
+    "assistant"
+  ],
+  "author": "Your Name <Your Email>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "@types/marked": "^6.0.0",
+    "@types/play-sound": "^1.1.2",
+    "@types/shelljs": "^0.8.15",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "chromadb": "^1.7.3",
+    "cli-highlight": "^2.1.11",
+    "highlight.js": "^11.9.0",
+    "jsdom": "^23.0.1",
+    "marked": "^11.1.0",
+    "openai": "^4.24.1",
+    "play-sound": "^1.1.6",
+    "playht": "^0.9.6",
+    "shelljs": "^0.8.5",
+    "ytdl-core": "^4.11.5"
+  }
+}
