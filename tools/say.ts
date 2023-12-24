@@ -1,6 +1,7 @@
 import dotenv from "dotenv"; dotenv.config();
-import PlayHT from 'playht';
 import { createWriteStream } from "fs";
+
+import * as PlayHT from "playht"
 
 function getNonce() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -65,7 +66,7 @@ module.exports = {
             const musicFileName = getNonce() + ".mp3";
             const fileStream = createWriteStream(musicFileName);
             const stream = await PlayHT.stream(sentence, GenerationOptions);
-            stream.on("data", (chunk) => fileStream.write(chunk));
+            stream.on("data", (chunk: any) => fileStream.write(chunk));
             stream.on("end", () => {
                 fileStream.end();
                 console.log(`speaking: ${sentence}`)

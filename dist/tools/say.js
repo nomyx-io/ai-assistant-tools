@@ -1,12 +1,35 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const playht_1 = __importDefault(require("playht"));
 const fs_1 = require("fs");
+const PlayHT = __importStar(require("playht"));
 function getNonce() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
@@ -44,7 +67,7 @@ module.exports = {
             voice = process.env.PLAY_HT_FEMALE_VOICE;
         }
         // Initialize PlayHT API
-        playht_1.default.init({
+        PlayHT.init({
             apiKey: process.env.PLAY_HT_AUTHORIZATION,
             userId: process.env.PLAY_HT_USER_ID
         });
@@ -53,7 +76,7 @@ module.exports = {
             voiceId: voice
         };
         // Warm up the network caching and voice
-        const warmUpStream = await playht_1.default.stream("warm up", GenerationOptions);
+        const warmUpStream = await PlayHT.stream("warm up", GenerationOptions);
         await new Promise((resolve, reject) => {
             warmUpStream.on("data", resolve);
             warmUpStream.on("(error: any)", reject);
@@ -66,7 +89,7 @@ module.exports = {
                 return `done`;
             const musicFileName = getNonce() + ".mp3";
             const fileStream = (0, fs_1.createWriteStream)(musicFileName);
-            const stream = await playht_1.default.stream(sentence, GenerationOptions);
+            const stream = await PlayHT.stream(sentence, GenerationOptions);
             stream.on("data", (chunk) => fileStream.write(chunk));
             stream.on("end", () => {
                 fileStream.end();
