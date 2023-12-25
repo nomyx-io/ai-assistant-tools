@@ -2,7 +2,7 @@ import fs from 'fs';
 import util from 'util';
 const readdirAsync = util.promisify(fs.readdir);
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -33,4 +33,4 @@ module.exports = {
             return JSON.stringify(err.message);
         }
     }
-}
+})

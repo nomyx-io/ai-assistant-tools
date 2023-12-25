@@ -1,6 +1,6 @@
 {
   "name": "@nomyx/assistant-tools",
-  "version": "1.0.1",
+  "version": "1.1.4",
   "description": "A TypeScript module for AI interpretation.",
   "main": "dist/tools/index.js",
   "publisher": "Nomyx",
@@ -15,7 +15,7 @@
     "AI",
     "assistant"
   ],
-  "author": "Your Name <Your Email>",
+  "author": "Sebastian Schepis <sebastian.s@nomyx.io>",
   "license": "ISC",
   "devDependencies": {
     "@types/jsdom": "^21.1.6",

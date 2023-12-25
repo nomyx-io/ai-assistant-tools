@@ -4,8 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ytdl_core_1 = __importDefault(require("ytdl-core"));
+const fs_1 = __importDefault(require("fs"));
 var player = require('play-sound')({});
-module.exports = {
+function getNonce() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -25,26 +29,45 @@ module.exports = {
     },
     function: async ({ id }) => {
         return new Promise((resolve) => {
-            // This function takes a YouTube video ID and streams the audio
-            function streamAndPlayAudio(videoId) {
-                // Fetch the video stream
-                const audioStream = (0, ytdl_core_1.default)(videoId, {
-                    filter: 'audioonly', // We want only the audio
-                });
-                // Handle stream (error: any)s (such as the video being unavailable)
-                audioStream.on('(error: any)', (err) => {
-                    console.error('Stream (error: any):', err.message);
-                    resolve(`Error streaming audio from video ${videoId}`);
-                });
-                // Play the audio using the platform's audio player
-                player.play(audioStream, function (err) {
-                    if (err)
-                        throw err;
-                    resolve(`Playing audio from video ${videoId}`);
-                });
+            try {
+                // This function takes a YouTube video ID and streams the audio
+                function streamAndPlayAudio(videoId) {
+                    // Fetch the video stream
+                    const audioStream = (0, ytdl_core_1.default)(videoId, {
+                        filter: 'audioonly', // We want only the audio
+                    });
+                    audioStream.on('error', (err) => {
+                        console.error('Stream error:', err.message);
+                        resolve(`Error streaming audio from video ${videoId}`);
+                    });
+                    // Pipe the stream to a file
+                    const filePath = `/tmp/${getNonce()}.mp3`;
+                    const writeStream = fs_1.default.createWriteStream(filePath);
+                    audioStream.pipe(writeStream);
+                    audioStream.on('end', () => {
+                        // Play the file
+                        player.play(filePath, (err) => {
+                            if (err) {
+                                console.error('Error playing file:', err);
+                                resolve(`Error playing audio from video ${videoId}`);
+                            }
+                            // Delete the file
+                            fs_1.default.unlink(filePath, (err) => {
+                                if (err) {
+                                    console.error('Error deleting file:', err);
+                                }
+                            });
+                            resolve(`Played audio from video ${videoId}`);
+                        });
+                    });
+                }
+                // Example usage with a YouTube video ID
+                streamAndPlayAudio(id);
             }
-            // Example usage with a YouTube video ID
-            streamAndPlayAudio(id);
+            catch (err) {
+                console.error(err);
+                resolve(`Error streaming audio from video ${id}`);
+            }
         });
     }
-};
+});

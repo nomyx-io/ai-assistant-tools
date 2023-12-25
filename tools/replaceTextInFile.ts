@@ -1,7 +1,7 @@
 import dotenv from "dotenv"; dotenv.config();
 import fs from 'fs';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -65,4 +65,4 @@ module.exports = {
             return `Error replacing text in ${filePath}: ${error.message}`
         }
     }
-}
+})

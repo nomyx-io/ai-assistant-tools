@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -57,4 +57,4 @@ module.exports = {
             return `Error replacing text in string: ${error.message}`
         }
     }
-}
+})

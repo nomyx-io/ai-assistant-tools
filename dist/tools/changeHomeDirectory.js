@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const os_1 = __importDefault(require("os"));
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -31,4 +31,4 @@ module.exports = {
             return `Error changing home directory: ${error.message}`;
         }
     }
-};
+});

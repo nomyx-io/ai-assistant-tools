@@ -1,6 +1,6 @@
 import dotenv from "dotenv"; dotenv.config();
 import axios from 'axios';
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: "function",
         function: {
@@ -70,4 +70,4 @@ module.exports = {
             return `Error calling News API: ${error.message}`
         }
     }
-}
+})

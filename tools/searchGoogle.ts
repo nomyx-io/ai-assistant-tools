@@ -1,5 +1,5 @@
 import axios from "axios";
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: "function",
         function: {
@@ -33,4 +33,4 @@ module.exports = {
             return error.message;
         }
     }
-}
+})

@@ -22,7 +22,7 @@ function getConfigValue(key) {
     }
     return JSON.stringify(config[key]);
 }
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -41,4 +41,4 @@ module.exports = {
         },
     },
     function: getConfigValue
-};
+});

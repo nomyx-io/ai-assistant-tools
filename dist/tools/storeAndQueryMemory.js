@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -38,4 +38,4 @@ module.exports = {
         // }
         return `not implemented yet`;
     }
-};
+});

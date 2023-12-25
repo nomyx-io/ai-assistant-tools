@@ -49,7 +49,7 @@ async function extractContent({ url }) {
     console.warn('No meaningful content could be extracted.');
     return null;
 }
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -68,4 +68,4 @@ module.exports = {
         },
     },
     function: extractContent
-};
+});

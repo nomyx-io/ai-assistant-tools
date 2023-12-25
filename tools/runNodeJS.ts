@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -40,4 +40,4 @@ module.exports = {
             }
         });
     }
-}
+})

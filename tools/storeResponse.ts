@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -24,4 +24,4 @@ module.exports = {
         // return { success: true };
         return `not implemented yet`
     }
-};
+})

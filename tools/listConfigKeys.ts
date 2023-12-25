@@ -26,7 +26,7 @@ function listConfigKeys() {
     }
 }
 
-module.exports = {
+module.exports = (config: any) => ({
   schema: {
     type: 'function',
     function: {
@@ -37,4 +37,4 @@ module.exports = {
     },
   },
   function: listConfigKeys
-}
+})

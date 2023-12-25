@@ -49,7 +49,7 @@ function listConfigKeys() {
         return JSON.stringify(err.message);
     }
 }
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -59,4 +59,4 @@ module.exports = {
         },
     },
     function: listConfigKeys
-};
+});

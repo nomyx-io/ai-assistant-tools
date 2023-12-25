@@ -1,6 +1,6 @@
 import os from 'os';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -26,4 +26,4 @@ module.exports = {
             return `Error changing home directory: ${error.message}`;
         }
     }
-};
+})

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const util_1 = __importDefault(require("util"));
 const readdirAsync = util_1.default.promisify(fs_1.default.readdir);
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -34,4 +34,4 @@ module.exports = {
             return JSON.stringify(err.message);
         }
     }
-};
+});

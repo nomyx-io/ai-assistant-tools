@@ -28,13 +28,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const fs_1 = require("fs");
 const PlayHT = __importStar(require("playht"));
+const fs_1 = __importDefault(require("fs"));
+var player = require('play-sound')({});
 function getNonce() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
-var player = require('play-sound')({});
-module.exports = {
+module.exports = (config) => ({
     schema: {
         "type": 'function',
         "function": {
@@ -57,49 +57,64 @@ module.exports = {
         }
     },
     function: async ({ text, voice }) => {
-        if (!voice) {
-            voice = 'male';
-        }
-        else if (voice === 'male') {
-            voice = process.env.PLAY_HT_MALE_VOICE;
-        }
-        else if (voice === 'female') {
-            voice = process.env.PLAY_HT_FEMALE_VOICE;
+        const apiKey = config.playHT.apiKey;
+        const userId = config.playHT.userId;
+        const maleVoice = config.playHT.maleVoice;
+        const femaleVoice = config.playHT.femaleVoice;
+        if (!apiKey || !userId || !maleVoice || !femaleVoice) {
+            const missing = [];
+            if (!apiKey)
+                missing.push('playHT.apiKey');
+            if (!userId)
+                missing.push('playHT.userId');
+            if (!maleVoice)
+                missing.push('playHT.maleVoice');
+            if (!femaleVoice)
+                missing.push('playHT.femaleVoice');
+            return `Missing configuration: ${missing.join(', ')} in configuration file. Please ask the user to provide the missing configuration using the ask_for_data tool.`;
         }
         // Initialize PlayHT API
         PlayHT.init({
-            apiKey: process.env.PLAY_HT_AUTHORIZATION,
-            userId: process.env.PLAY_HT_USER_ID
+            apiKey: config.playHT.apiKey,
+            userId: config.playHT.userId,
         });
-        const GenerationOptions = {
-            voiceEngine: "PlayHT2.0-turbo",
-            voiceId: voice
-        };
-        // Warm up the network caching and voice
-        const warmUpStream = await PlayHT.stream("warm up", GenerationOptions);
-        await new Promise((resolve, reject) => {
-            warmUpStream.on("data", resolve);
-            warmUpStream.on("(error: any)", reject);
-        });
+        async function speakSentence(sentence, voice) {
+            if (!sentence)
+                return;
+            const stream = await PlayHT.stream(sentence, {
+                voiceEngine: "PlayHT2.0-turbo",
+                voiceId: voice === 'male' ? config.playHT.maleVoice : config.playHT.femaleVoice,
+            });
+            const chunks = [];
+            stream.on("data", (chunk) => chunks.push(chunk));
+            return new Promise((resolve, reject) => {
+                stream.on("end", () => {
+                    const buf = Buffer.concat(chunks);
+                    // save the audio to a file
+                    const filename = `${getNonce()}.mp3`;
+                    fs_1.default.writeFileSync(filename, buf);
+                    player.play(filename, function (err) {
+                        fs_1.default.unlinkSync(filename);
+                        resolve(`done`);
+                    });
+                });
+            });
+        }
         // split the text into sentences
         const sentences = text.split(/[.!?]/g).filter((sentence) => sentence.length > 0);
         const consumeSentence = async () => {
-            const sentence = sentences.shift();
-            if (!sentence)
-                return `done`;
-            const musicFileName = getNonce() + ".mp3";
-            const fileStream = (0, fs_1.createWriteStream)(musicFileName);
-            const stream = await PlayHT.stream(sentence, GenerationOptions);
-            stream.on("data", (chunk) => fileStream.write(chunk));
-            stream.on("end", () => {
-                fileStream.end();
-                console.log(`speaking: ${sentence}`);
-                player.play(musicFileName, () => {
-                    consumeSentence();
-                });
+            return new Promise((resolve, reject) => {
+                const loop = async () => {
+                    const sentence = sentences.shift();
+                    if (!sentence)
+                        return resolve('done');
+                    await speakSentence(sentence, voice);
+                    return await loop();
+                };
+                return loop();
             });
-            stream.on("(error: any)", () => consumeSentence);
         };
         await consumeSentence();
+        return 'done';
     }
-};
+});

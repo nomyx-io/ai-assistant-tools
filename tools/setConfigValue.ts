@@ -23,7 +23,7 @@ function setConfigValue({key, value}: any) {
   return `Set config key ${key} to ${value}`;
 }
 
-module.exports = {
+module.exports = (config: any) => ({
   schema: {
       type: 'function',
       function: {
@@ -46,4 +46,4 @@ module.exports = {
       },
   },
   function: setConfigValue
-}
+})

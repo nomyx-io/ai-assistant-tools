@@ -1,6 +1,6 @@
 "use strict";
 const highlight = require('cli-highlight').highlight;
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -22,4 +22,4 @@ module.exports = {
         console.log(highlight(value, { language: 'markdown', ignoreIllegals: true }));
         return value;
     }
-};
+});

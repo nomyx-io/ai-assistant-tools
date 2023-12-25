@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const fs_1 = __importDefault(require("fs"));
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -72,4 +72,4 @@ module.exports = {
             return `Error replacing text in ${filePath}: ${error.message}`;
         }
     }
-};
+});

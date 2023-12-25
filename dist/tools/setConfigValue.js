@@ -45,7 +45,7 @@ function setConfigValue({ key, value }) {
     fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
     return `Set config key ${key} to ${value}`;
 }
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -68,4 +68,4 @@ module.exports = {
         },
     },
     function: setConfigValue
-};
+});

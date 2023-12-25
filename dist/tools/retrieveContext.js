@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -29,4 +29,4 @@ module.exports = {
         //return { queryResults };
         return 'does nothing';
     }
-};
+});

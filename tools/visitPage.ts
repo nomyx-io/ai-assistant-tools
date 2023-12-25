@@ -50,7 +50,7 @@ async function extractContent({url}: any) {
   return null;
 }
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -69,4 +69,4 @@ module.exports = {
         },
     },
     function: extractContent
-}
+  })

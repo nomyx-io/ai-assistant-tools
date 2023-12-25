@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const axios_1 = __importDefault(require("axios"));
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: "function",
         function: {
@@ -77,4 +77,4 @@ module.exports = {
             return `Error calling News API: ${error.message}`;
         }
     }
-};
+});

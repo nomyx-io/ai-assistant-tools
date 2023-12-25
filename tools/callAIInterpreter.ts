@@ -1,7 +1,7 @@
 import dotenv from "dotenv"; 
 dotenv.config();
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -22,4 +22,4 @@ module.exports = {
     function: async ({ command }: any) => {
 
     }
-}
+})

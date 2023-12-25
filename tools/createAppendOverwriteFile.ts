@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -55,4 +55,4 @@ module.exports = {
             }
         });
     }
-}
+})

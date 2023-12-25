@@ -1,5 +1,5 @@
 "use strict";
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -25,4 +25,4 @@ module.exports = {
         // return { success: true };
         return `not implemented yet`;
     }
-};
+});

@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = (config: any) => ({
   schema: {
     type: 'function',
     function: {
@@ -27,4 +27,4 @@ module.exports = {
       return `Error logging in to JIRA: ${error.message}`;
     }
   }
-};
+})

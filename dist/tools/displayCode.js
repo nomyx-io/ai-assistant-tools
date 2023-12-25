@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli_highlight_1 = require("cli-highlight");
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -28,4 +28,4 @@ module.exports = {
         console.log('\n' + highlighted + '\n');
         return value;
     }
-};
+});

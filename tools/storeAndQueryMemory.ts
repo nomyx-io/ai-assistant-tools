@@ -1,6 +1,6 @@
 import chromadb from 'chromadb'; // Import the ChromaDB library
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -42,4 +42,4 @@ module.exports = {
         // }
         return `not implemented yet`
     }
-};
+})

@@ -74,7 +74,7 @@ async function search_gdelt(term: any, options: any) {
     return gdelt_project_query(term, options.start_date, options.end_date, options.max_records, options.format);
 }
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: "function",
         function: {
@@ -117,4 +117,4 @@ module.exports = {
             return error.message;
         }
     }
-}
+})

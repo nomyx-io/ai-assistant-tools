@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const util_1 = __importDefault(require("util"));
 const readFileAsync = util_1.default.promisify(fs_1.default.readFile);
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
@@ -33,4 +33,4 @@ module.exports = {
             return `Error reading ${path}: ${err.message}`;
         }
     }
-};
+});

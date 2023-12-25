@@ -1,7 +1,7 @@
 import shell from 'shelljs';
 import highlight from 'cli-highlight';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -30,4 +30,4 @@ module.exports = {
             });
         });
     }
-}
+})

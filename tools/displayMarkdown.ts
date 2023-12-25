@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -20,4 +20,4 @@ module.exports = {
         console.log(highlight(value, {language: 'markdown', ignoreIllegals: true}))
         return value;
     }
-}
+})

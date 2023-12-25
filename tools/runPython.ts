@@ -4,7 +4,7 @@ import { exec } from "child_process";
 
 //const hljs = import 'highlight.js';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: "function",
         function: {
@@ -42,4 +42,4 @@ module.exports = {
             }
         });
     }
-}
+})

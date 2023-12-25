@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as util from 'util';
 const readFileAsync = util.promisify(fs.readFile);
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -36,4 +36,4 @@ module.exports = {
             return `Error reading ${path}: ${err.message}`
         }
     }
-}
+})

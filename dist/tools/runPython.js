@@ -7,7 +7,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const child_process_1 = require("child_process");
 //const hljs = import 'highlight.js';
-module.exports = {
+module.exports = (config) => ({
     schema: {
         type: "function",
         function: {
@@ -48,4 +48,4 @@ module.exports = {
             }
         });
     }
-};
+});

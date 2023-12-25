@@ -1,6 +1,6 @@
 import { highlight } from 'cli-highlight';
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -27,4 +27,4 @@ module.exports = {
         console.log('\n' + highlighted + '\n');
         return value;
     }
-}
+})

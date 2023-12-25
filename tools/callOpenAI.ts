@@ -5,7 +5,7 @@ const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-module.exports = {
+module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -40,4 +40,4 @@ module.exports = {
             return `Error calling OpenAI API: ${error.message}`;
         }
     }
-}
+})
