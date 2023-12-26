@@ -37,3 +37,4 @@ module.exports = (config) => {
         tools: exports.tools
     };
 };
+exports.default = module.exports;
