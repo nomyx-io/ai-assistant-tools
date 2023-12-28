@@ -14,7 +14,7 @@ async function extractContent({ url }) {
     }
     catch (error) {
         console.error('Error fetching URL:', url);
-        return null;
+        return `Error fetching URL: ${url}`;
     }
     // Create a DOM object
     dom = new jsdom_1.JSDOM(response.data);
@@ -28,7 +28,7 @@ async function extractContent({ url }) {
         }
     }
     catch (error) {
-        console.warn('Readability did not find meaningful content.');
+        return `Error extracting content using Readability: ${error.message}`;
     }
     // Fallback: DOM inspection based on common selectors
     const selectors = ['#content', '#main', 'article', '.post', '.article', 'section'];
@@ -45,9 +45,7 @@ async function extractContent({ url }) {
         console.log('Content extracted using generic <article> or <p> tag');
         return mainContent.innerHTML;
     }
-    // If all methods fail, return null
-    console.warn('No meaningful content could be extracted.');
-    return null;
+    return `Error: No content found for URL: ${url}`;
 }
 module.exports = (config) => ({
     schema: {

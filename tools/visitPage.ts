@@ -10,7 +10,7 @@ async function extractContent({url}: any) {
     response = await axios.get(url);
   } catch (error: any) {
     console.error('Error fetching URL:', url);
-    return null;
+    return `Error fetching URL: ${url}`
   }
 
   // Create a DOM object
@@ -25,7 +25,7 @@ async function extractContent({url}: any) {
       return article.content;
     }
   } catch (error: any) {
-    console.warn('Readability did not find meaningful content.');
+    return `Error extracting content using Readability: ${error.message}`;
   }
 
   // Fallback: DOM inspection based on common selectors
@@ -45,9 +45,7 @@ async function extractContent({url}: any) {
     return mainContent.innerHTML;
   }
   
-  // If all methods fail, return null
-  console.warn('No meaningful content could be extracted.');
-  return null;
+  return `Error: No content found for URL: ${url}`;
 }
 
 module.exports = (config: any) => ({
