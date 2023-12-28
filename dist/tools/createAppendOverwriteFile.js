@@ -43,7 +43,7 @@ module.exports = (config) => ({
             if (append) {
                 fs_1.default.appendFile(filePath, content, 'utf8', (err) => {
                     if (err) {
-                        reject(`Error appending to ${filePath}: ${err.message}`);
+                        resolve(`Error appending to ${filePath}: ${err.message}. Are you providing a full path?`);
                     }
                     else {
                         resolve(`Successfully appended to ${filePath}`);
@@ -53,7 +53,7 @@ module.exports = (config) => ({
             else {
                 fs_1.default.writeFile(filePath, content, 'utf8', (err) => {
                     if (err) {
-                        reject(`Error creating ${filePath}: ${err.message}`);
+                        resolve(`Error creating ${filePath}: ${err.message}.  Are you providing a full path?`);
                     }
                     else {
                         resolve(`Successfully created ${filePath}`);

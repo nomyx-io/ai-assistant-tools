@@ -17,7 +17,11 @@ module.exports = (config: any) => ({
         },
     },
     function: async ({ value }: any) => {
-        console.log(highlight(value, {language: 'markdown', ignoreIllegals: true}))
-        return value;
+        try {
+            const highlight = require('highlight.js').highlightAuto;
+            console.log(highlight(value, {language: 'markdown', ignoreIllegals: true}))
+        } catch (err: any) {
+            console.log(value);
+        }
     }
 })
