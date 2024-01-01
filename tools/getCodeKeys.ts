@@ -20,7 +20,13 @@ module.exports = (config: any) => ({
             }
         },
     },
-    function: async (params: any) => (await parseCode(params.path, params.keys, config.openai_api_key)).map((element: any) => element.key),
+    function: async (params: any) => {
+        const parsedCode = await parseCode(params.path, params.keys, config.openai_api_key);
+        if (!parsedCode.elements)
+            return `Error: No file found at path ${params.path}`;
+        const keys = parsedCode.elements.map((element: any) => element.key);
+        return JSON.parse(keys);
+    },
     exports: {
         parseCode: async (path: string, keys: string | undefined = undefined) => parseCode(path, keys, config.openai_api_key)
     }
@@ -60,7 +66,7 @@ FILE CONTENTS: ${fileContents},
 KEYS: ${keys}
 `
         }
-        const code = await assistant.run(fileContents, [], {}, apiKey, (event: string, value: any) => {});
+        const code = await assistant.run(fileContents, {}, [], apiKey, (event: string, value: any) => {});
         assistant.delete();
         return JSON.parse(code);
     } catch (err: any) {

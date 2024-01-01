@@ -18,7 +18,8 @@ module.exports = (config) => ({
             }
         },
     },
-    function: async ({ value }) => {
-        console.log(value);
+    function: async ({ result }) => {
+        console.log(result);
+        return `Result displayed to user`;
     }
 });

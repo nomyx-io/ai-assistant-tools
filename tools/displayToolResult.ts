@@ -17,7 +17,8 @@ module.exports = (config: any) => ({
             }
         },
     },
-    function: async ({ value}: any) => {
-        console.log(value);
+    function: async ({ result }: any) => {
+        console.log(result);
+        return `Result displayed to user`
     }
 })

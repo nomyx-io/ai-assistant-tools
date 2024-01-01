@@ -27,24 +27,6 @@ const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 // Example config file path; you might want to set your specific path or logic to determine it.
 const CONFIG_FILE_PATH = path.join(__dirname, 'config.json');
-/**
- * This tool sets a configuration value by key to a JSON config file.
- *
- * @toolType utility
- * @hasSideEffect true
- * @param {string} key - The config key to set.
- * @param {string|number|boolean|object} value - The value to set for the key.
- * @returns {void}
- */
-function setConfigValue({ key, value }) {
-    let config = {};
-    if (fs.existsSync(CONFIG_FILE_PATH)) {
-        config = JSON.parse(fs.readFileSync(CONFIG_FILE_PATH, 'utf8'));
-    }
-    config[key] = value;
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
-    return `Set config key ${key} to ${value}`;
-}
 module.exports = (config) => ({
     schema: {
         type: 'function',
@@ -67,5 +49,9 @@ module.exports = (config) => ({
             }
         },
     },
-    function: setConfigValue
+    function: async function ({ key, value }) {
+        config[key] = value;
+        fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
+        return `Set config key ${key} to ${value}`;
+    }
 });
