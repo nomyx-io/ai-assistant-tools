@@ -18,6 +18,6 @@ module.exports = (config) => ({
         },
     },
     function: async function ({ key }) {
-        return config[key] || "";
+        return `${key}=${config[key] || ""}`;
     }
 });

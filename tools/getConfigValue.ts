@@ -17,6 +17,6 @@ module.exports = (config: any) => ({
       },
   },
   function: async function({key}: any) {
-    return config[key] || "";
+    return `${key}=${config[key] || ""}`;
   }
 })
