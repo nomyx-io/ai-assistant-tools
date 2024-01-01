@@ -1,4 +1,3 @@
-const highlight = require('cli-highlight').highlight;
 module.exports = (config: any) => ({
     schema: {
         type: 'function',
@@ -18,7 +17,7 @@ module.exports = (config: any) => ({
         },
     },
     function: async ({ result }: any) => {
-        console.log(result);
-        return `Result displayed to user`
+        console.log(result || 'No result to display.');
+        return result ? 'Result displayed.' : 'No result to display.';
     }
 })

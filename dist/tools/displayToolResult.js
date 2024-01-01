@@ -1,5 +1,4 @@
 "use strict";
-const highlight = require('cli-highlight').highlight;
 module.exports = (config) => ({
     schema: {
         type: 'function',
@@ -19,7 +18,7 @@ module.exports = (config) => ({
         },
     },
     function: async ({ result }) => {
-        console.log(result);
-        return `Result displayed to user`;
+        console.log(result || 'No result to display.');
+        return result ? 'Result displayed.' : 'No result to display.';
     }
 });
