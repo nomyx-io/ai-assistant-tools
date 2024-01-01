@@ -1,7 +1,6 @@
+import inquirer from 'inquirer';
+
 import fs from 'fs';
-import readline from 'readline';
-const inquirer = require('inquirer');
-const path = require('path');
 
 function parseInput(input: any) {
   // If input is a valid JSON string, parse it; otherwise, it's a file path

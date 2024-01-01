@@ -3,9 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const inquirer_1 = __importDefault(require("inquirer"));
 const fs_1 = __importDefault(require("fs"));
-const inquirer = require('inquirer');
-const path = require('path');
 function parseInput(input) {
     // If input is a valid JSON string, parse it; otherwise, it's a file path
     try {
@@ -83,7 +82,7 @@ module.exports = (config) => ({
         }
         const questionsArray = parseInput(input);
         const questions = getQuestions(questionsArray);
-        inquirer.prompt(questions).then((answers) => {
+        inquirer_1.default.prompt(questions).then((answers) => {
             const results = questionsArray.map((questionData) => ({
                 ...questionData,
                 answer: answers[questionData.question],
