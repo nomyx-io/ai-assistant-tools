@@ -12,16 +12,11 @@ module.exports = (config: any) => ({
                         description: 'The markdown string to display'
                     }
                 },
-                required: ['path']
+                required: ['value']
             }
         },
     },
     function: async ({ value }: any) => {
-        try {
-            const highlight = require('highlight.js').highlightAuto;
-            console.log(highlight(value, {language: 'markdown', ignoreIllegals: true}))
-        } catch (err: any) {
-            console.log(value);
-        }
+        console.log(value);
     }
 })

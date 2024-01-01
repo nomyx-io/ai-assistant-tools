@@ -9,8 +9,8 @@ module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
-            name: 'call_ai_interpreter',
-            description: 'call an AI-enabled assistant capable of performing a variety of tasks.',
+            name: 'call_ai_assistant',
+            description: 'call an AI-enabled assistant capable of performing a variety of tasks including gathering information, answering questions, and performing actions',
             parameters: {
                 type: 'object',
                 properties: {
@@ -24,5 +24,21 @@ module.exports = (config) => ({
         },
     },
     function: async ({ command }) => {
+        const { Assistant, loadNewPersona } = require("@nomyx/assistant");
+        const baseTools = require('@nomyx/assistant-tools')({
+            openai_api_key: config.openai_api_key,
+        });
+        try {
+            const assistant = await Assistant.create(config.assistant_name, await loadNewPersona(baseTools.schemas), baseTools.schemas, config.model);
+            if (!assistant) {
+                return `Error: Could not create assistant`;
+            }
+            const result = await assistant.run(command, baseTools.funcs, baseTools.schemas, config.openai_api_key, (event, value) => { });
+            assistant.delete();
+            return result;
+        }
+        catch (err) {
+            return `Error: ${err.message}`;
+        }
     }
 });

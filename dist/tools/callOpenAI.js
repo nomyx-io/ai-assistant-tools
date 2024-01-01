@@ -6,9 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const openai_1 = require("openai");
-const client = new openai_1.OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 module.exports = (config) => ({
     schema: {
         type: 'function',
@@ -33,13 +30,21 @@ module.exports = (config) => ({
     },
     function: async ({ command, params }) => {
         try {
+            const client = new openai_1.OpenAI({
+                apiKey: config.openai_api_key,
+            });
             command = command.split('.');
             let ref = client;
             while (command.length > 0) {
                 ref = ref[command.shift()];
             }
-            params = params.split(',');
-            return await ref(...params);
+            if (params) {
+                params = params && params.split(',');
+                return await ref(...params);
+            }
+            else {
+                return await ref();
+            }
         }
         catch (error) {
             return `Error calling OpenAI API: ${error.message}`;

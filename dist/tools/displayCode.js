@@ -24,8 +24,14 @@ module.exports = (config) => ({
         },
     },
     function: async ({ value, type }) => {
-        const highlighted = (0, cli_highlight_1.highlight)(value, { language: type, ignoreIllegals: true });
-        console.log('\n' + highlighted + '\n');
-        return value;
+        try {
+            const highlighted = (0, cli_highlight_1.highlight)(value, { language: type, ignoreIllegals: true });
+            console.log('\n' + highlighted + '\n');
+            return `displayed ${type} code`;
+        }
+        catch (err) {
+            console.log(value);
+            return `displayed ${type} code`;
+        }
     }
 });

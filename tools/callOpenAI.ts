@@ -1,9 +1,6 @@
 import dotenv from "dotenv"; 
 dotenv.config();
 import { OpenAI } from 'openai';
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
 module.exports = (config: any) => ({
     schema: {
@@ -29,13 +26,20 @@ module.exports = (config: any) => ({
     },
     function: async ({command, params}: any) => {
         try {
+            const client = new OpenAI({
+                apiKey: config.openai_api_key,
+            });
             command = command.split('.');
             let ref: any = client;
             while (command.length > 0) {
                 ref = ref[command.shift()];
             }
-            params = params.split(',');
-            return await ref(...params);
+            if(params) {
+                params = params && params.split(',');
+                return await ref(...params);
+            } else {
+                return await ref();
+            }
         } catch (error: any) {
             return `Error calling OpenAI API: ${error.message}`;
         }

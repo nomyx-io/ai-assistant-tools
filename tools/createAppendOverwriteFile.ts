@@ -36,6 +36,12 @@ module.exports = (config: any) => ({
     function: async ({ directory, fileName, content = '', append = false }: any) => {
         const filePath = path.join(directory, fileName);
         return new Promise((resolve, reject) => {
+            // first make sure that the directory exists
+            fs.mkdir(directory, { recursive: true }, (err) => {
+                if (err) {
+                    resolve(`Error creating directory ${directory}: ${err.message}. Are you providing a full path?`);
+                }
+            });
             if (append) {
                 fs.appendFile(filePath, content, 'utf8', (err) => {
                     if (err) {

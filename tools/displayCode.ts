@@ -23,8 +23,13 @@ module.exports = (config: any) => ({
         },
     },
     function: async ({ value, type }: any) => {
-        const highlighted = highlight(value, { language: type, ignoreIllegals: true });
-        console.log('\n' + highlighted + '\n');
-        return value;
+        try {
+            const highlighted = highlight(value, { language: type, ignoreIllegals: true });
+            console.log('\n' + highlighted + '\n');
+            return `displayed ${type} code`
+        } catch (err) {
+            console.log(value);
+            return `displayed ${type} code`
+        }
     }
 })

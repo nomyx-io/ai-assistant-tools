@@ -18,13 +18,6 @@ module.exports = (config: any) => ({
         },
     },
     function: async ({ value}: any) => {
-        try {
-            console.log(highlight(value, {language: 'markdown', ignoreIllegals: true}))
-            return `message displayed to user`
-        } catch (e) {
-            console.log(e)
-            return `error displaying message to user`
-        }
-
+        console.log(value);
     }
 })

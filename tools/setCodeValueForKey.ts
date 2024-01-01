@@ -24,24 +24,21 @@ module.exports = (config: any) => ({
             }
         },
     },
-    function: async ({ path }: any) => {
+    function: async ({ path, key, value }: any) => {
         const fs = require('fs');
+        const parseCode = require('./getCodeKeys')(config).exports.parseCode;
         try {
-            const fs = require('fs');
-            const pathParts = path.split('.');
-            const extension = pathParts[pathParts.length - 1];
-            let codeKeys: any = [];
-            const fileContents = fs.readFileSync(path, 'utf8');
-            if (extension === 'js') {
-                codeKeys = await fileContents.match(/(?<=\${).*?(?=})/g);
-            } else if (extension === 'ts') {
-                codeKeys = await fileContents.match(/(?<=\${).*?(?=})/g);
-            } else if (extension === 'python') {
-                codeKeys = await fileContents.match(/(?<=\${).*?(?=})/g);
+            const codeObject = await parseCode(path);
+            const code = JSON.parse(codeObject);
+            const valueIndex = code.elements.findIndex((element: any) => element.key === key);
+            if (valueIndex === -1) {
+                return JSON.stringify(`Error: Could not find key ${key} in ${path}`);
             }
-            return JSON.stringify(codeKeys);
+            code.elements[valueIndex].value = value;
+            fs.writeFileSync(path, JSON.stringify(code, null, 4));
+            return JSON.stringify(`Successfully set value for key ${key} in ${path}`);
         } catch (err: any) {
-            return JSON.stringify(err.message);
+            return `Error: ${err.message}`
         }
     }
 });
