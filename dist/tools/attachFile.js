@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
 module.exports = (config) => ({
     schema: {
         type: 'function',
@@ -20,11 +24,14 @@ module.exports = (config) => ({
     },
     function: async function ({ path }, assistant) {
         try {
-            const myAssistantFile = await assistant.attachFile(path);
-            return JSON.stringify(myAssistantFile);
+            if (!fs_1.default.existsSync(path)) {
+                return `Error: File ${path} does not exist`;
+            }
+            const ret = assistant.attachFile(path);
+            return ret && `Successfully attached file ${path} to assistant ${assistant.name}` || `Error attaching file ${path} to assistant ${assistant.name}`;
         }
         catch (err) {
-            return JSON.stringify(err.message);
+            return `Error attaching file ${path} to assistant ${assistant.name}: ${err.message}`;
         }
     }
 });

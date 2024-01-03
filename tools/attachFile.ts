@@ -22,10 +22,13 @@ module.exports = (config: any) => ({
     },
     function: async function ({ path }: any, assistant: any) {
         try {
-            const myAssistantFile = await assistant.attachFile(path);
-            return JSON.stringify(myAssistantFile);
+            if(!fs.existsSync(path)) {
+                return `Error: File ${path} does not exist`;
+            }
+            const ret = assistant.attachFile(path);
+            return ret && `Successfully attached file ${path} to assistant ${assistant.name}` || `Error attaching file ${path} to assistant ${assistant.name}`;
         } catch (err: any) {
-            return JSON.stringify(err.message);
+            return `Error attaching file ${path} to assistant ${assistant.name}: ${err.message}`
         }
     }
 })
