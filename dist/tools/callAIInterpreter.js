@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-module.exports = (config) => ({
+module.exports = (config, getTools) => ({
     schema: {
         type: 'function',
         function: {
@@ -25,9 +25,7 @@ module.exports = (config) => ({
     },
     function: async ({ command }) => {
         const { Assistant, loadNewPersona } = require("@nomyx/assistant");
-        const baseTools = require('../index')({
-            openai_api_key: config.openai_api_key,
-        });
+        const baseTools = getTools();
         try {
             const assistant = await Assistant.create(config.assistant_name, await loadNewPersona(baseTools.schemas), baseTools.schemas, config.model);
             if (!assistant) {

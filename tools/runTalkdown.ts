@@ -1,4 +1,4 @@
-module.exports = (config: any) => ({
+module.exports = (config: any, getTools: any) => ({
     schema: {
         type: "function",
         function: {
@@ -125,9 +125,8 @@ YOU ARE IN THE ${process.cwd()} DIRECTORY RUNNING ON A ${process.platform} MACHI
 `
         try {
             const { Assistant } = require("@nomyx/assistant");
-            const baseTools: any = require('../index')({
-                openai_api_key: config.openai_api_key,
-            });
+            const baseTools: any = getTools();
+
             try {
                 const assistant = await Assistant.create(
                     config.assistant_name,

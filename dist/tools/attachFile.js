@@ -18,9 +18,8 @@ module.exports = (config) => ({
             }
         },
     },
-    function: async function ({ path }) {
+    function: async function ({ path }, assistant) {
         try {
-            const assistant = this.assistant;
             const myAssistantFile = await assistant.attachFile(path);
             return JSON.stringify(myAssistantFile);
         }

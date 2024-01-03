@@ -9,6 +9,13 @@ const path_1 = __importDefault(require("path"));
 exports.schemas = [];
 exports.funcs = {};
 exports.tools = [];
+function getTools() {
+    return {
+        schemas: exports.schemas,
+        funcs: exports.funcs,
+        tools: exports.tools
+    };
+}
 module.exports = (config) => {
     const curFolder = path_1.default.join(__dirname, '.');
     // read all the files in the current folder
@@ -17,7 +24,7 @@ module.exports = (config) => {
     const jsFiles = files.filter(f => f.endsWith('.js') && !f.startsWith('index'));
     for (const jsFile of jsFiles) {
         const jsFilePath = path_1.default.join(curFolder, jsFile);
-        const jsFileContent = require(jsFilePath)(config);
+        const jsFileContent = require(jsFilePath)(config, getTools);
         if (!jsFileContent['schema'] || !jsFileContent['function']) {
             continue;
         }

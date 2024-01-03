@@ -1,5 +1,5 @@
 "use strict";
-module.exports = (config) => ({
+module.exports = (config, getTools) => ({
     schema: {
         type: "function",
         function: {
@@ -124,9 +124,7 @@ YOU ARE IN THE ${process.cwd()} DIRECTORY RUNNING ON A ${process.platform} MACHI
 `;
         try {
             const { Assistant } = require("@nomyx/assistant");
-            const baseTools = require('../index')({
-                openai_api_key: config.openai_api_key,
-            });
+            const baseTools = getTools();
             try {
                 const assistant = await Assistant.create(config.assistant_name, prompt(baseTools.schemas), baseTools.schemas, config.model);
                 if (!assistant) {

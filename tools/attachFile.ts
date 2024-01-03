@@ -20,9 +20,8 @@ module.exports = (config: any) => ({
             }
         },
     },
-    function: async function ({ path }: any) {
+    function: async function ({ path }: any, assistant: any) {
         try {
-            const assistant = (this as any).assistant;
             const myAssistantFile = await assistant.attachFile(path);
             return JSON.stringify(myAssistantFile);
         } catch (err: any) {

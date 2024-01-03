@@ -1,7 +1,7 @@
 import dotenv from "dotenv"; 
 dotenv.config();
 
-module.exports = (config: any) => ({
+module.exports = (config: any, getTools: any) => ({
     schema: {
         type: 'function',
         function: {
@@ -21,9 +21,8 @@ module.exports = (config: any) => ({
     },
     function: async ({ command }: any) => {
         const { Assistant, loadNewPersona } = require("@nomyx/assistant");
-        const baseTools: any = require('../index')({
-            openai_api_key: config.openai_api_key,
-        });
+        const baseTools: any = getTools();
+        
         try {
             const assistant = await Assistant.create(
                 config.assistant_name,

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-module.exports = (config) => ({
+module.exports = (config, getTools) => ({
     schema: {
         type: 'function',
         function: {
@@ -29,13 +29,11 @@ module.exports = (config) => ({
     },
     function: async ({ path, instructions }) => {
         const { Assistant } = require("@nomyx/assistant");
-        const baseTools = require('../index')({
-            openai_api_key: config.openai_api_key,
-        });
+        const baseTools = getTools();
         try {
-            const assistant = await Assistant.create(config.assistant_name, `You are an HTML expert. Read the HTML file from the path given in the instructions and update it according to the instructions. Be surgixal and precise with your changes. ALWAYS check your work before submitting it.
+            const assistant = await Assistant.create(config.assistant_name, `You are an HTML expert. Read the HTML file from the path given in the instructions and update it according to the instructions. Be surgical and precise with your changes. ALWAYS check your work before submitting it.
 
-ools at your disposal for this task include:
+tools at your disposal for this task include:
 - create_Append_Overwrite_File - create, append to, or overwrite a file in the given folder with the given name and content. ONLY USE THIG TO CREATE THE FILE OR IF YOU HAVE SOMETHING TO APPEND TO THE FILE
 - replace_text_in_file - replace one or more given strings in a file with another given string. USE THIS TOOL FOR TEXT FILE UPDATES AS MUCH AS POSSIBLE
 

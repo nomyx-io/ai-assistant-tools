@@ -5,6 +5,13 @@ export const schemas: any = []
 export const funcs: any = {}
 export const tools: any = []
 
+function getTools() {
+    return {
+        schemas,
+        funcs,
+        tools
+    }
+}
 
 module.exports = (config: any) => {
 
@@ -18,7 +25,7 @@ module.exports = (config: any) => {
 
     for(const jsFile of jsFiles) {
         const jsFilePath = path.join(curFolder, jsFile);
-        const jsFileContent = require(jsFilePath)(config)
+        const jsFileContent = require(jsFilePath)(config, getTools)
         
         if(!jsFileContent['schema'] || !jsFileContent['function']) {
             continue;
