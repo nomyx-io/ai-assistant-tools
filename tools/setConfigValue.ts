@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // Example config file path; you might want to set your specific path or logic to determine it.
-const CONFIG_FILE_PATH = path.join(__dirname, 'config.json');
+const CONFIG_FILE_PATH = path.join(__dirname,  'config.json');
 
 
 module.exports = (config: any) => ({
@@ -28,8 +28,15 @@ module.exports = (config: any) => ({
       },
   },
   function: async function ({key, value}: any) {
-    config[key] = value;
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
-    return `Set config key ${key} to ${value}`;
+    try {
+        config[key] = value;
+        if(!fs.existsSync(CONFIG_FILE_PATH)) {
+            fs.writeFileSync(CONFIG_FILE_PATH, '{}', 'utf8');
+        }
+        fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
+        return `Set config key ${key} to ${value}`;
+    } catch (err: any) {
+        return `Error: ${err.message}`
+    }
   }
 })

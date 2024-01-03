@@ -50,8 +50,16 @@ module.exports = (config) => ({
         },
     },
     function: async function ({ key, value }) {
-        config[key] = value;
-        fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
-        return `Set config key ${key} to ${value}`;
+        try {
+            config[key] = value;
+            if (!fs.existsSync(CONFIG_FILE_PATH)) {
+                fs.writeFileSync(CONFIG_FILE_PATH, '{}', 'utf8');
+            }
+            fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf8');
+            return `Set config key ${key} to ${value}`;
+        }
+        catch (err) {
+            return `Error: ${err.message}`;
+        }
     }
 });

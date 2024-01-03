@@ -19,5 +19,6 @@ module.exports = (config) => ({
     },
     function: async ({ value }) => {
         console.log(value);
+        return `Successfully displayed markdown`;
     }
 });

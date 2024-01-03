@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const inquirer_1 = __importDefault(require("inquirer"));
 const fs_1 = __importDefault(require("fs"));
 function parseInput(input) {
     // If input is a valid JSON string, parse it; otherwise, it's a file path
@@ -44,56 +43,53 @@ function getQuestions(questionsArray) {
 }
 module.exports = (config) => ({
     schema: {
-        type: 'function',
+        type: "function",
         function: {
-            name: 'ask_questions',
-            description: 'ask the user for values for the given comma-delimited list of data then update the config.json with with the values',
+            name: "ask_questions",
+            description: "ask the user for values for the given comma-delimited list of data then update the config.json with with the values",
             parameters: {
-                type: 'array',
-                input: {
-                    type: 'object',
-                    properties: {
-                        question: {
-                            type: 'string',
-                            description: 'The question to ask the user'
-                        },
-                        type: {
-                            type: 'string',
-                            description: 'The type of question to ask the user',
-                            enum: ['multiplechoice', 'truefalse', 'fillintheblank']
-                        },
-                        values: {
-                            type: 'array',
-                            description: 'The possible values for the question. Only used for multiplechoice questions'
-                        }
+                type: "object",
+                properties: {
+                    question: {
+                        type: "string",
+                        description: "The question to ask the user"
                     },
-                    required: ['question', 'type']
+                    type: {
+                        type: "string",
+                        description: "The type of question to ask the user",
+                    },
+                    values: {
+                        type: "string",
+                        description: "A comma-delimited string of the possible values for the question. Only used for multiplechoice questions"
+                    },
                 },
-                required: ['data']
+                required: ["query"]
             }
-        },
+        }
     },
     function: async (properties) => {
-        const input = properties;
-        // Exit if input is not provided
-        if (!input) {
-            console.error('Please provide the JSON questions block or file path as a command-line argument.');
-            process.exit(1);
-        }
-        const questionsArray = parseInput(input);
-        const questions = getQuestions(questionsArray);
-        inquirer_1.default.prompt(questions).then((answers) => {
-            const results = questionsArray.map((questionData) => ({
-                ...questionData,
-                answer: answers[questionData.question],
-            }));
-            return answers.push(results);
-        }).then((answers) => {
-            console.log(answers);
-            return JSON.stringify(answers);
-        })
-            .catch((error) => {
-            console.error('An error occurred:', error);
+        return new Promise((resolve) => {
+            const input = properties;
+            const Cli = config.Cli;
+            // Exit if input is not provided
+            if (!input) {
+                console.error('Please provide the JSON questions block or file path as a command-line argument.');
+                process.exit(1);
+            }
+            const questionsArray = parseInput(input);
+            const questions = getQuestions(questionsArray);
+            Cli.instance.askQuestions(questions).then((answers) => {
+                const results = questionsArray.map((questionData) => ({
+                    ...questionData,
+                    answer: answers[questionData.question],
+                }));
+                return answers.push(results);
+            }).then((answers) => {
+                resolve(JSON.stringify(answers));
+            })
+                .catch((error) => {
+                resolve('An error occurred:' + error.message);
+            });
         });
     }
 });

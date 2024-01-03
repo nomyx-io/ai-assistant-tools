@@ -26,8 +26,8 @@ module.exports = (config: any) => ({
             description: 'The name of the function to call on the smart contract.'
           },
           functionParams: {
-            type: 'array',
-            description: 'Array of values to be passed as parameters to the smart contract function.'
+            type: 'string',
+            description: 'A comma-delimited list of values to be passed as parameters to the smart contract function.'
           },
           privateKey: {
             type: 'string',
@@ -50,7 +50,7 @@ module.exports = (config: any) => ({
 
     const contractWithSigner = wallet ? contract.connect(wallet) : contract;
 
-    const response = await contractWithSigner[functionName](...functionParams);
+    const response = await contractWithSigner[functionName](...functionParams.split(','));
     return response;
   }
 })

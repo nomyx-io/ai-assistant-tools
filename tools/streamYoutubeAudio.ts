@@ -53,10 +53,10 @@ module.exports = (config: any) => ({
                             // Delete the file
                             fs.unlink(filePath, (err) => {
                                 if (err) {
-                                    console.error('Error deleting file:', err);
+                                    return resolve(`Error deleting file ${filePath}`);
                                 }
+                                resolve(`Played audio from video ${videoId}`);
                             });
-                            resolve(`Played audio from video ${videoId}`);
                         });
                     });
                 }
