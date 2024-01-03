@@ -29,7 +29,7 @@ module.exports = (config) => ({
     },
     function: async ({ path, instructions }) => {
         const { Assistant } = require("@nomyx/assistant");
-        const baseTools = require('@nomyx/assistant-tools')({
+        const baseTools = require('../index')({
             openai_api_key: config.openai_api_key,
         });
         try {

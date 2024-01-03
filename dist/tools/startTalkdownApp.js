@@ -127,7 +127,7 @@ YOU ARE IN THE ${process.cwd()} DIRECTORY RUNNING ON A ${process.platform} MACHI
 `;
         try {
             const { Assistant } = require("@nomyx/assistant");
-            const baseTools = require('@nomyx/assistant-tools')({
+            const baseTools = require('../index')({
                 openai_api_key: config.openai_api_key,
             });
             try {
