@@ -27,6 +27,11 @@ module.exports = (config) => ({
             if (!fs_1.default.existsSync(path)) {
                 return `Error: File ${path} does not exist`;
             }
+            const supportedFormats = ['c', 'cpp', 'csv', 'docx', 'html', 'java', 'json', 'md', 'pdf', 'php', 'pptx', 'py', 'rb', 'tex', 'txt', 'css', 'jpeg', 'jpg', 'js', 'gif', 'png', 'tar', 'ts', 'xlsx', 'xml', 'zip'];
+            const extension = path.split('.').pop();
+            if (!extension || !supportedFormats.includes(extension)) {
+                return `Error: File ${path} has an unsupported format`;
+            }
             const ret = assistant.attachFile(path);
             return ret && `Successfully attached file ${path} to assistant ${assistant.name}` || `Error attaching file ${path} to assistant ${assistant.name}`;
         }
