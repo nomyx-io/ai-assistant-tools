@@ -6,7 +6,7 @@ module.exports = (config: any) => ({
         type: 'function',
         function: {
             name: 'replace_text_in_file',
-            description: 'replace one or more given strings in a file with another given string. ** USE THIS FUNCTION FOR TEXT FILE UPDATES AS MUCH AS POSSIBLE **',
+            description: 'replace one or more given strings in a file. ** USE THIS FUNCTION FOR TEXT FILE UPDATES AS MUCH AS POSSIBLE **',
             parameters: {
                 type: 'object',
                 properties: {

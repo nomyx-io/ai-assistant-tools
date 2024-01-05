@@ -1,6 +1,6 @@
 {
   "name": "@nomyx/assistant-tools",
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "A TypeScript module for AI assistance.",
   "main": "dist/tools/index.js",
   "publisher": "Nomyx",
