@@ -1,25 +1,31 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = (config) => ({
     schema: {
         type: 'function',
         function: {
             name: 'list_attached_assistant_files',
-            description: 'list the files attached to the assistant',
+            description: 'list the files attached to the assistant for thread with thread_id',
             parameters: {
                 type: 'object',
-                properties: {},
+                properties: {
+                    thread_id: {
+                        type: 'string',
+                        description: 'The thread_id of the assistant'
+                    },
+                },
             }
         },
     },
-    function: async function () {
+    function: async function (_dummy, assistant) {
         try {
-            const assistant = this.assistant;
+            if (!assistant) {
+                return `Error: Could not create assistant`;
+            }
             const myAssistantFiles = await assistant.listFiles();
             return JSON.stringify(myAssistantFiles);
         }
         catch (err) {
-            return JSON.stringify(err.message);
+            return `Error: ${err.message}`;
         }
     }
 });
