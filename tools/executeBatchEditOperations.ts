@@ -1,10 +1,10 @@
-import axios from 'axios';
+import fs from 'fs';
 module.exports = (config: any) => ({
     schema: {
         type: 'function',
         function: {
             name: 'execute_batch_edit_operations',
-            description: 'execute a series of edit operations in the text in the given order',
+            description: 'execute a series of edit operations on the file at the given path *** USE THIS TOOL FOR TEXT EDITING!!! ***',
             parameters: {
                 type: 'object',
                 properties: {
@@ -16,7 +16,7 @@ module.exports = (config: any) => ({
                             properties: {
                                 name: {
                                     type: 'string',
-                                    description: 'The name of the operation to execute.'
+                                    description: 'The name of the operation to execute. Supported operations: replace, remove, insert, append, prepend'
                                 },
                                 parameters: {
                                     type: 'object',
@@ -27,21 +27,26 @@ module.exports = (config: any) => ({
                             required: ['name']
                         }
                     },
-                    text: {
+                    path: {
                         type: 'string',
-                        description: 'The text to execute the operations on.'
+                        description: 'The path to the file to edit.'
                     }
                 },
-                required: ['operations', 'text']
+                required: ['operations', 'path']
             }
         },
     },
-    function: async ({ operations, text }: any) => {
+    function: async ({ operations, path }: any) => {
         try {
-            executeBatchOperations(text, operations);
-            return `Success`
+            if(!fs.existsSync(path)) {
+                return `Error: File not found at path ${path}`;
+            }
+            let text = fs.readFileSync(path, 'utf8');
+            text = executeBatchOperations(text, operations);
+            fs.writeFileSync(path, text);
+            return `Successfully executed batch edit operations on file at path ${path}`
         } catch (error: any) {
-            return `Error calling external API: ${error.message}`;
+            return `Error: ${error.message}`
         }
     }
 })
@@ -62,6 +67,12 @@ function getOperationFunction(name: string) {
             return replace;
         case 'remove':
             return remove;
+        case 'insert':
+            return insert;
+        case 'append':
+            return append;
+        case 'prepend':
+            return prepend;
         default:
             throw new Error(`Unknown operation: ${name}`);
     }
@@ -75,4 +86,19 @@ function replace(text: string, parameters: any) {
 function remove(text: string, parameters: any) {
     const { find } = parameters;
     return text.replace(find, '');
+}
+
+function insert(text: string, parameters: any) {
+    const { index, value } = parameters;
+    return text.slice(0, index) + value + text.slice(index);
+}
+
+function append(text: string, parameters: any) {
+    const { value } = parameters;
+    return text + value;
+}
+
+function prepend(text: string, parameters: any) {
+    const { value } = parameters;
+    return value + text;
 }
