@@ -9,7 +9,7 @@ module.exports = (config) => ({
         type: 'function',
         function: {
             name: 'attach_file_to_assistant',
-            description: 'attach a file to the assistant to make it available to the assistant',
+            description: 'attach a file to the assistant to make it available to the assistant [c, cpp, csv, docx, html, java, json, md, pdf, php, pptx, py, rb, tex, txt, css, jpeg, jpg, js, gif, png, tar, ts, xlsx, xml, zip] only',
             parameters: {
                 type: 'object',
                 properties: {

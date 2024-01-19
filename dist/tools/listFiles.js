@@ -5,9 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const util_1 = __importDefault(require("util"));
-const readdirAsync = util_1.default.promisify(fs_1.default.readdir);
-const statAsync = util_1.default.promisify(fs_1.default.stat);
 module.exports = (config) => ({
     schema: {
         type: 'function',
@@ -29,10 +26,10 @@ module.exports = (config) => ({
     function: async ({ directory }) => {
         try {
             const out = [];
-            const files = await readdirAsync(directory);
+            const files = fs_1.default.readdirSync(directory);
             for (const file of files) {
                 const filePath = path_1.default.join(directory, file);
-                const stat = await statAsync(filePath);
+                const stat = fs_1.default.statSync(filePath);
                 out.push({
                     name: file,
                     path: filePath,

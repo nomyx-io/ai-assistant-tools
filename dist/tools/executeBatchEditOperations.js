@@ -34,7 +34,7 @@ module.exports = (config) => ({
                     },
                     path: {
                         type: 'string',
-                        description: 'The path to the file to edit.'
+                        description: 'The full path to the file to edit.'
                     }
                 },
                 required: ['operations', 'path']

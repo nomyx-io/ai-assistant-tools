@@ -1,8 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import util from 'util';
-const readdirAsync = util.promisify(fs.readdir);
-const statAsync = util.promisify(fs.stat);
 
 module.exports = (config: any) => ({
     schema: {
@@ -25,10 +22,10 @@ module.exports = (config: any) => ({
     function: async ( {directory}: any ) => {
         try {
             const out: any = [];
-            const files = await readdirAsync(directory);
+            const files = fs.readdirSync(directory);
             for (const file of files) {
                 const filePath = path.join(directory, file);
-                const stat = await statAsync(filePath);
+                const stat = fs.statSync(filePath);
                 out.push({
                     name: file,
                     path: filePath,

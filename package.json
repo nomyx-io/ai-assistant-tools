@@ -1,6 +1,6 @@
 {
   "name": "@nomyx/assistant-tools",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "description": "A TypeScript module for AI assistance.",
   "main": "dist/tools/index.js",
   "publisher": "Nomyx",
@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@mozilla/readability": "^0.5.0",
-    "@nomyx/assistant": "^1.5.9",
+    "@nomyx/assistant": "^1.6.0",
+    "@nomyx/assistant-tools": "^1.6.0",
     "chromadb": "^1.7.3",
     "cli-highlight": "^2.1.11",
     "ethers": "^6.9.1",

@@ -40,10 +40,12 @@ module.exports = (config) => ({
             }
             if (params) {
                 params = params && params.split(',');
-                return await ref(...params);
+                const result = await ref(...params);
+                return JSON.stringify(result || {});
             }
             else {
-                return await ref();
+                const result = await ref();
+                return JSON.stringify(result || {});
             }
         }
         catch (error) {
