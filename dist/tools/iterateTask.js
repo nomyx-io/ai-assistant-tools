@@ -9,8 +9,8 @@ module.exports = (config, getTools) => ({
     schema: {
         type: 'function',
         function: {
-            name: 'call_ai_assistant',
-            description: 'call an AI-enabled assistant capable of performing a variety of tasks including gathering information, answering questions, and performing actions',
+            name: 'iterate_task',
+            description: 'call the AI assistant iteratively to perform a task. The assistant will attempt to perform the command and return the result. Clearly describe the task and the expected result and its format.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -31,12 +31,22 @@ module.exports = (config, getTools) => ({
         const { Assistant, loadNewPersona } = require("@nomyx/assistant");
         const baseTools = getTools();
         try {
-            const _persona = persona + '. Available tools are: ' + Object.keys(baseTools.funcs).join(', ');
-            const assistant = await Assistant.create(config.assistant_name, await loadNewPersona(baseTools.schemas), baseTools.schemas, config.model);
+            const _persona = persona + '. Available tools are: ' + Object.keys(baseTools.funcs).join(', ') + '. *** RETURN THE PERCENT COMPLETE OF THE TASK ON THE LAST LINE OF YOUR OUTPUT ***';
+            let running = true;
+            let result = '';
+            const assistant = await Assistant.create(config.assistant_name, _persona, baseTools.schemas, config.model);
             if (!assistant) {
                 return `Error: Could not create assistant`;
             }
-            const result = await assistant.run(command, baseTools.funcs, baseTools.schemas, config.openai_api_key, (event, value) => { });
+            while (running) {
+                result = await assistant.run(command, baseTools.funcs, baseTools.schemas, config.openai_api_key, (event, value) => { });
+                assistant.delete();
+                const lines = result.split('\n');
+                const percent = parseInt(lines[lines.length - 1]);
+                if (percent >= 100) {
+                    running = false;
+                }
+            }
             assistant.delete();
             return result;
         }
